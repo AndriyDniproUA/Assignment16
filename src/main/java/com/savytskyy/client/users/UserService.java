@@ -9,15 +9,22 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
 
-@RequiredArgsConstructor
 public class UserService {
+    public UserService(HttpClient httpClient, ObjectMapper objectMapper) {
+        this.httpClient = httpClient;
+        this.objectMapper = objectMapper;
+    }
+
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
     private String token = null;
+    private Date loginTime = new Date();
+    private final long MAX_LOGIN_DURATION = 30;
 
     public List<User> getUserList() {
         HttpRequest request = HttpRequest.newBuilder()
@@ -114,6 +121,9 @@ public class UserService {
 
             System.out.println(logResponse.getStatus());
             setToken(logResponse.getToken());
+            if (logResponse.getStatus().equals("Ok")){loginTime = new Date();}
+
+
 
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
@@ -130,7 +140,14 @@ public class UserService {
 
     //TODO добавить проверку срока годности!
     public boolean hasValidToken() {
-        return (token!=null);
-
+        return (token!=null&& tokenIsFresh());
     }
+
+    public boolean tokenIsFresh () {
+        long periodAfterLogin = new Date().getTime()-loginTime.getTime();
+        periodAfterLogin/=60000;
+
+        return periodAfterLogin<MAX_LOGIN_DURATION;
+    }
+
 }
