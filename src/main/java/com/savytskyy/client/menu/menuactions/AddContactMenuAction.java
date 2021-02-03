@@ -49,7 +49,7 @@ public class AddContactMenuAction implements MenuAction {
 
     @Override
     public boolean isVisible() {
-        return (userService.getToken() != null);
+        return userService.hasValidToken();
     }
 
 

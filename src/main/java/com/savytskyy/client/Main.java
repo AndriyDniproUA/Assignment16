@@ -22,14 +22,12 @@ public class Main {
         menu.addAction(new FindContactByValueMenuAction(httpClient, objectMapper, userService, onlineContactsService, sc));
         menu.addAction(new AddContactMenuAction(httpClient, objectMapper, userService, onlineContactsService, sc));
         menu.addAction(new ReadAllUsersAfterLoginMenuAction(httpClient, objectMapper, userService));
+        menu.addAction(new QuitUserMenuAction(userService));
 
         menu.addAction(new LoginUserMenuAction(httpClient, objectMapper, userService, sc));
         menu.addAction(new ReadAllUsersBeforeLoginMenuAction(httpClient, objectMapper, userService));
         menu.addAction(new RegisterUserMenuAction(httpClient, objectMapper, userService, sc));
         menu.addAction(new QuitMenuAction(userService));
         menu.run();
-
     }
-
-
 }

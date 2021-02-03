@@ -50,8 +50,7 @@ public class FindContactByNameMenuAction implements MenuAction {
     }
 
     @Override
-    public boolean isVisible() {
-        return (userService.getToken() != null);
+    public boolean isVisible() { return userService.hasValidToken();
     }
 }
 

@@ -18,7 +18,6 @@ public class UserService {
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
     private String token = null;
-    //private final Scanner scanner;
 
     public List<User> getUserList() {
         HttpRequest request = HttpRequest.newBuilder()
@@ -55,7 +54,6 @@ public class UserService {
                     response.body(),
                     UserResponse.class);
 
-            //System.out.println(userResponse.getStatus());
             return userResponse.getUsers();
 
         } catch (IOException | InterruptedException e) {
@@ -115,7 +113,7 @@ public class UserService {
                     LoginResponse.class);
 
             System.out.println(logResponse.getStatus());
-            token= logResponse.getToken();
+            setToken(logResponse.getToken());
 
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
@@ -124,5 +122,15 @@ public class UserService {
 
     public String getToken () {
         return token;
+    }
+
+    public void setToken (String token) {
+        this.token = token;
+    }
+
+    //TODO добавить проверку срока годности!
+    public boolean hasValidToken() {
+        return (token!=null);
+
     }
 }
